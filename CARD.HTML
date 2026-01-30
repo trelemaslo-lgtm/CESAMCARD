@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ochilov Diyor - Premium Card</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Premium Dark Palette */
+            --bg-dark: #000000;
+            --glass-surface: rgba(20, 20, 20, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --accent-primary: #3b82f6; /* Blue */
+            --accent-glow: rgba(59, 130, 246, 0.5);
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: var(--bg-dark);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            margin: 0;
+            position: relative;
+        }
+
+        /* --- Ambient Lighting Background --- */
+        .ambient-light {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .light-source {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.4;
+            animation: pulse-move 15s infinite alternate ease-in-out;
+        }
+
+        .light-1 {
+            top: -20%;
+            left: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, #2563eb, transparent 60%);
+        }
+
+        .light-2 {
+            bottom: -20%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, #7c3aed, transparent 60%);
+            animation-delay: -5s;
+        }
+
+        @keyframes pulse-move {
+            0% { transform: translate(0, 0) scale(1); opacity: 0.4; }
+            100% { transform: translate(30px, 40px) scale(1.1); opacity: 0.6; }
+        }
+
+        /* --- The Card --- */
+        .card-container {
+            perspective: 1500px;
+            z-index: 10;
+            padding: 20px;
+        }
+
+        .premium-card {
+            width: 100%;
+            max-width: 380px;
+            background: var(--glass-surface);
+            backdrop-filter: blur(40px) saturate(180%);
+            -webkit-backdrop-filter: blur(40px) saturate(180%);
+            border: 1px solid var(--glass-border);
+            border-radius: 32px;
+            padding: 40px 30px;
+            box-shadow: 
+                0 40px 100px -20px rgba(0,0,0,0.8),
+                inset 0 0 0 1px rgba(255,255,255,0.05);
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.2s ease-out;
+            overflow: hidden;
+        }
+
+        /* Noise Texture for realism */
+        .premium-card::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Top Spotlight Effect */
+        .spotlight {
+            position: absolute;
+            top: -150px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        /* --- Content Styling --- */
+        .brand-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            font-weight: 700;
+            color: #e2e8f0;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .profile-name {
+            font-size: 2rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, #ffffff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .profile-role {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            margin-bottom: 2.5rem;
+            display: block;
+        }
+
+        /* --- Interactive Links --- */
+        .link-group {
+            display: flex;
+            flex-direction: column;
+            gap: 16px; /* Increased gap for better touch area */
+        }
+
+        .glass-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(90deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 18px 20px; /* Bigger touch target */
+            border-radius: 18px;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 30px -5px rgba(0,0,0,0.4);
+        }
+
+        /* Telegram Special Highlight */
+        .telegram-btn {
+            border-color: rgba(59, 130, 246, 0.3);
+            background: linear-gradient(90deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%);
+            box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.1);
+        }
+
+        .telegram-btn:hover {
+            border-color: rgba(59, 130, 246, 0.8);
+            box-shadow: 0 0 25px rgba(59, 130, 246, 0.4), inset 0 0 20px rgba(59, 130, 246, 0.1);
+            background: linear-gradient(90deg, rgba(59, 130, 246, 0.25) 0%, rgba(59, 130, 246, 0.1) 100%);
+        }
+
+        /* Instagram Special Highlight */
+        .instagram-btn {
+            border-color: rgba(236, 72, 153, 0.3);
+            background: linear-gradient(90deg, rgba(236, 72, 153, 0.1) 0%, rgba(236, 72, 153, 0.05) 100%);
+            box-shadow: 0 0 0 1px rgba(236, 72, 153, 0.1);
+        }
+
+        .instagram-btn:hover {
+            border-color: rgba(236, 72, 153, 0.8);
+            box-shadow: 0 0 25px rgba(236, 72, 153, 0.4), inset 0 0 20px rgba(236, 72, 153, 0.1);
+            background: linear-gradient(90deg, rgba(236, 72, 153, 0.25) 0%, rgba(236, 72, 153, 0.1) 100%);
+        }
+
+        .instagram-btn .btn-icon {
+            background: rgba(236, 72, 153, 0.2);
+            color: #f472b6; /* Pink */
+        }
+
+        /* Pulse Animation for Telegram Icon */
+        .telegram-btn .btn-icon {
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+            animation: pulse-blue 2s infinite;
+        }
+
+        @keyframes pulse-blue {
+            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+            70% { box-shadow: 0 0 0 8px rgba(59, 130, 246, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+        }
+
+        /* Hover glow effect inside button */
+        .glass-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.5s;
+        }
+        .glass-btn:hover::before {
+            transform: translateX(100%);
+        }
+
+        .btn-icon {
+            width: 36px; /* Bigger Icon */
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.1);
+            font-size: 1.1rem;
+            transition: 0.3s;
+        }
+        
+        .glass-btn:hover .btn-icon {
+            transform: scale(1.1);
+        }
+
+        .btn-text {
+            flex-grow: 1;
+            margin-left: 15px;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+        }
+        .btn-sub {
+            display: block;
+            font-size: 0.75rem;
+            color: #94a3b8;
+            font-weight: 500;
+            margin-top: 2px;
+        }
+
+        .link-arrow {
+            transition: transform 0.3s;
+            color: #64748b;
+        }
+        .glass-btn:hover .link-arrow {
+            transform: translateX(4px);
+            color: white;
+        }
+
+        /* Action Buttons Grid */
+        .action-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 24px;
+        }
+        
+        .action-btn {
+            background: rgba(59, 130, 246, 0.1);
+            color: #60a5fa;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            padding: 16px;
+            border-radius: 18px;
+            text-align: center;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .action-btn:hover {
+            background: rgba(59, 130, 246, 0.2);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .save-btn {
+            background: white;
+            color: black;
+            border: none;
+        }
+        .save-btn:hover {
+            background: #f8fafc;
+            box-shadow: 0 0 25px rgba(255,255,255,0.4);
+            color: black;
+        }
+
+        /* Toast Notification */
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #ffffff;
+            color: #000;
+            text-align: center;
+            border-radius: 50px;
+            padding: 12px 24px;
+            position: fixed;
+            z-index: 100;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+        #toast.show {
+            visibility: visible;
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Atmospheric Background -->
+    <div class="ambient-light">
+        <div class="light-source light-1"></div>
+        <div class="light-source light-2"></div>
+    </div>
+
+    <!-- Main Card -->
+    <div class="card-container" id="cardContainer">
+        <div class="premium-card" id="card">
+            <div class="spotlight"></div>
+
+            <div class="text-center">
+                <div class="brand-pill">
+                    <i class="fa-solid fa-layer-group"></i> CESAM CEMENT
+                </div>
+
+                <h1 class="profile-name">OCHILOV<br>DIYOR</h1>
+                <span class="profile-role">Sales Manager</span>
+            </div>
+
+            <div class="link-group">
+                <!-- Phone -->
+                <a href="tel:955750132" class="glass-btn">
+                    <div class="btn-icon"><i class="fa-solid fa-phone"></i></div>
+                    <div class="btn-text">
+                        Позвонить
+                        <span class="btn-sub">95 575 01 32</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right link-arrow"></i>
+                </a>
+
+                <!-- Telegram -->
+                <a href="https://t.me/CESAMXXL" target="_blank" class="glass-btn telegram-btn">
+                    <div class="btn-icon"><i class="fa-brands fa-telegram"></i></div>
+                    <div class="btn-text">
+                        Telegram
+                        <span class="btn-sub" style="color: #bfdbfe;">@CESAMXXL</span>
+                    </div>
+                    <i class="fa-solid fa-arrow-up-right-from-square link-arrow"></i>
+                </a>
+
+                <!-- Instagram (NEW) -->
+                <a href="https://instagram.com/MAYBEIMDIOR" target="_blank" class="glass-btn instagram-btn">
+                    <div class="btn-icon"><i class="fa-brands fa-instagram"></i></div>
+                    <div class="btn-text">
+                        Instagram
+                        <span class="btn-sub" style="color: #fbcfe8;">@MAYBEIMDIOR</span>
+                    </div>
+                    <i class="fa-solid fa-arrow-up-right-from-square link-arrow"></i>
+                </a>
+
+                <!-- Email -->
+                <a href="mailto:trelemaslo@gmail.com" class="glass-btn">
+                    <div class="btn-icon text-gray-400"><i class="fa-solid fa-envelope"></i></div>
+                    <div class="btn-text">
+                        Email
+                        <span class="btn-sub">trelemaslo@gmail.com</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right link-arrow"></i>
+                </a>
+            </div>
+
+            <div class="action-grid">
+                <button class="action-btn save-btn" onclick="downloadVCard()">
+                    <i class="fa-solid fa-download"></i> Контакт
+                </button>
+                <button class="action-btn" onclick="copyTelegram()">
+                    <i class="fa-regular fa-copy"></i> ID
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast"><i class="fa-solid fa-check mr-2"></i>Скопировано!</div>
+
+    <script>
+        // Subtle 3D Tilt Effect
+        const card = document.getElementById('card');
+        const container = document.getElementById('cardContainer');
+
+        container.addEventListener('mousemove', (e) => {
+            const rect = container.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            // Calculate center
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            // Calculate tilt (Divided by 25 for subtlety)
+            const rotateX = ((y - centerY) / 25) * -1;
+            const rotateY = ((x - centerX) / 25);
+
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+
+        container.addEventListener('mouseleave', () => {
+            card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
+        });
+
+        // Copy Functions
+        function copyTelegram() {
+            navigator.clipboard.writeText("@CESAMXXL").then(() => {
+                showToast("ID Telegram скопирован");
+            });
+        }
+
+        // vCard Generation
+        function downloadVCard() {
+            // Construct vCard data
+            const vCardData = [
+                'BEGIN:VCARD',
+                'VERSION:3.0',
+                'N:Ochilov;Diyor;;;',
+                'FN:Ochilov Diyor',
+                'ORG:CESAM CEMENT',
+                'TITLE:Sales Manager',
+                'TEL;TYPE=CELL:955750132',
+                'EMAIL:trelemaslo@gmail.com',
+                'URL:https://t.me/CESAMXXL',
+                'END:VCARD'
+            ].join('\n');
+
+            const blob = new Blob([vCardData], { type: 'text/vcard;charset=utf-8' });
+            const url = window.URL.createObjectURL(blob);
+            
+            // Create temporary link to trigger download
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'Diyor_Ochilov.vcf');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showToast("Контакт скачивается...");
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById("toast");
+            toast.innerHTML = `<i class="fa-solid fa-check mr-2"></i> ${message}`;
+            toast.className = "show";
+            setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3000);
+        }
+    </script>
+</body>
+</html>
