@@ -118,6 +118,63 @@
             pointer-events: none;
         }
 
+        /* --- Avatar Styling --- */
+        .avatar-glow {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 1.5rem;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            border: 1px solid rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.2);
+            position: relative;
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); /* Bouncy transition */
+        }
+        
+        .avatar-glow:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 0 50px rgba(59, 130, 246, 0.4);
+            cursor: pointer;
+        }
+
+        .avatar-glow:hover i {
+             animation: rubberBand 1s;
+        }
+        
+        /* Colorful glow behind avatar */
+        .avatar-glow::after {
+            content: '';
+            position: absolute;
+            inset: -5px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #3b82f6, #ec4899);
+            z-index: -1;
+            opacity: 0.4;
+            filter: blur(15px);
+            animation: spin-glow 10s linear infinite;
+        }
+
+        @keyframes spin-glow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* --- Animation Keyframes --- */
+        @keyframes rubberBand {
+            0% { transform: scale3d(1, 1, 1); }
+            30% { transform: scale3d(1.25, 0.75, 1); }
+            40% { transform: scale3d(0.75, 1.25, 1); }
+            50% { transform: scale3d(1.15, 0.85, 1); }
+            65% { transform: scale3d(0.95, 1.05, 1); }
+            75% { transform: scale3d(1.05, 0.95, 1); }
+            100% { transform: scale3d(1, 1, 1); }
+        }
+
         /* --- Content Styling --- */
         .brand-pill {
             display: inline-flex;
@@ -159,7 +216,7 @@
         .link-group {
             display: flex;
             flex-direction: column;
-            gap: 16px; /* Increased gap for better touch area */
+            gap: 14px; 
         }
 
         .glass-btn {
@@ -168,7 +225,7 @@
             justify-content: space-between;
             background: linear-gradient(90deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 18px 20px; /* Bigger touch target */
+            padding: 16px 20px;
             border-radius: 18px;
             text-decoration: none;
             color: white;
@@ -182,6 +239,12 @@
             border-color: rgba(255, 255, 255, 0.4);
             transform: translateY(-3px) scale(1.02);
             box-shadow: 0 15px 30px -5px rgba(0,0,0,0.4);
+        }
+
+        /* NEW: Icon Animation on Hover */
+        .glass-btn:hover .btn-icon i {
+            animation: rubberBand 0.8s;
+            color: white !important;
         }
 
         /* Telegram Special Highlight */
@@ -215,11 +278,16 @@
             color: #f472b6; /* Pink */
         }
 
-        /* Pulse Animation for Telegram Icon */
+        /* Pulse Animation for Telegram Icon (Always Active) */
         .telegram-btn .btn-icon {
             background: rgba(59, 130, 246, 0.2);
             color: #60a5fa;
             animation: pulse-blue 2s infinite;
+        }
+        
+        /* Pause pulse on hover to let rubberBand play */
+        .telegram-btn:hover .btn-icon {
+            animation: none;
         }
 
         @keyframes pulse-blue {
@@ -245,7 +313,7 @@
         }
 
         .btn-icon {
-            width: 36px; /* Bigger Icon */
+            width: 36px;
             height: 36px;
             display: flex;
             align-items: center;
@@ -264,15 +332,8 @@
             flex-grow: 1;
             margin-left: 15px;
             font-weight: 700;
-            font-size: 1rem;
+            font-size: 1.1rem; 
             letter-spacing: 0.5px;
-        }
-        .btn-sub {
-            display: block;
-            font-size: 0.75rem;
-            color: #94a3b8;
-            font-weight: 500;
-            margin-top: 2px;
         }
 
         .link-arrow {
@@ -371,52 +432,54 @@
                     <i class="fa-solid fa-layer-group"></i> CESAM CEMENT
                 </div>
 
+                <!-- NEW Beautiful Avatar -->
+                <div class="avatar-glow">
+                    <i class="fa-solid fa-user-tie"></i>
+                </div>
+
                 <h1 class="profile-name">OCHILOV<br>DIYOR</h1>
                 <span class="profile-role">Sales Manager</span>
             </div>
 
             <div class="link-group">
-                <!-- Phone -->
+                <!-- Phone (Only Text) -->
                 <a href="tel:955750132" class="glass-btn">
                     <div class="btn-icon"><i class="fa-solid fa-phone"></i></div>
                     <div class="btn-text">
                         Позвонить
-                        <span class="btn-sub">95 575 01 32</span>
                     </div>
                     <i class="fa-solid fa-chevron-right link-arrow"></i>
                 </a>
 
-                <!-- Telegram -->
+                <!-- Telegram (Only Text) -->
                 <a href="https://t.me/CESAMXXL" target="_blank" class="glass-btn telegram-btn">
                     <div class="btn-icon"><i class="fa-brands fa-telegram"></i></div>
                     <div class="btn-text">
                         Telegram
-                        <span class="btn-sub" style="color: #bfdbfe;">@CESAMXXL</span>
                     </div>
                     <i class="fa-solid fa-arrow-up-right-from-square link-arrow"></i>
                 </a>
 
-                <!-- Instagram (NEW) -->
+                <!-- Instagram (Only Text) -->
                 <a href="https://instagram.com/MAYBEIMDIOR" target="_blank" class="glass-btn instagram-btn">
                     <div class="btn-icon"><i class="fa-brands fa-instagram"></i></div>
                     <div class="btn-text">
                         Instagram
-                        <span class="btn-sub" style="color: #fbcfe8;">@MAYBEIMDIOR</span>
                     </div>
                     <i class="fa-solid fa-arrow-up-right-from-square link-arrow"></i>
                 </a>
 
-                <!-- Email -->
+                <!-- Email (Only Text) -->
                 <a href="mailto:trelemaslo@gmail.com" class="glass-btn">
                     <div class="btn-icon text-gray-400"><i class="fa-solid fa-envelope"></i></div>
                     <div class="btn-text">
                         Email
-                        <span class="btn-sub">trelemaslo@gmail.com</span>
                     </div>
                     <i class="fa-solid fa-chevron-right link-arrow"></i>
                 </a>
             </div>
 
+            <!-- Action buttons preserved -->
             <div class="action-grid">
                 <button class="action-btn save-btn" onclick="downloadVCard()">
                     <i class="fa-solid fa-download"></i> Контакт
